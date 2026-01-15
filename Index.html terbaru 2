@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>HD Video & Link WA Downloader</title>
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  height:100%;
+  font-family:Arial, sans-serif;
+  overflow:hidden;
+  background:#0d001a;
+}
+canvas#bgCanvas{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+.container{
+  width:520px;
+  background:rgba(27,0,46,0.85);
+  padding:25px;
+  border-radius:25px;
+  border:6px solid;
+  border-image: linear-gradient(270deg,#9b30ff,#00e5ff,#00ff5e,#9b30ff) 1;
+  box-shadow:0 0 25px #9b30ff,0 0 45px #00e5ff,0 0 70px #00ff5e;
+  color:#fff;
+  text-align:center;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+}
+h3{margin-bottom:15px;color:#d580ff;}
+input{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border-radius:10px;
+  border:none;
+  background:#222;
+  color:#fff;
+}
+input::placeholder{ color:#d580ff; }
+video{
+  width:100%;
+  margin-top:15px;
+  border-radius:15px;
+  border:3px solid #b266ff;
+  box-shadow:0 0 12px #9b30ff,0 0 20px #b266ff;
+}
+.hd-label{
+  position:absolute;
+  top:5px;
+  left:5px;
+  background:#9b30ff;
+  color:#fff;
+  padding:3px 6px;
+  font-size:13px;
+  border-radius:4px;
+  text-shadow:0 0 8px #b266ff;
+  animation:blinkHD 1.5s infinite alternate;
+}
+@keyframes blinkHD{
+  0%{text-shadow:0 0 8px #9b30ff;}
+  50%{text-shadow:0 0 16px #00e5ff,0 0 20px #00ff5e;}
+  100%{text-shadow:0 0 8px #9b30ff;}
+}
+.button-box{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:15px;
+}
+.button-box button{
+  width:100%;
+  padding:16px;
+  border-radius:15px;
+  border:none;
+  background:#9b30ff;
+  color:#fff;
+  font-weight:bold;
+  font-size:17px;
+  cursor:pointer;
+  text-shadow:0 0 12px #b266ff;
+  animation:buttonLED 4s linear infinite;
+}
+.button-box button:hover{
+  text-shadow:0 0 20px #b266ff,0 0 25px #9b30ff;
+}
+@keyframes buttonLED{
+  0%{background:#9b30ff;}
+  50%{background:#00e5ff;}
+  100%{background:#9b30ff;}
+}
+.next-btn{
+  width:100%;
+  padding:16px;
+  margin-top:12px;
+  border-radius:15px;
+  border:none;
+  background:#00e5ff;
+  color:#111;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  text-shadow:0 0 12px #9b30ff;
+  animation:buttonLED 4s linear infinite;
+}
+.next-btn:hover{
+  text-shadow:0 0 20px #b266ff,0 0 25px #9b30ff;
+}
+.section{ display:none; }
+.active{ display:block; }
+.developer{ margin-top:15px;font-size:13px;color:#b266ff;text-align:center;}
+.preview-container{ position:relative; margin-top:15px; }
+
+/* Scrollbar hide */
+::-webkit-scrollbar{display:none;}
+</style>
+</head>
+<body>
+
+<canvas id="bgCanvas"></canvas>
+
+<!-- Audio Senja -->
+<audio id="bgAudio" src="senja.mp3" autoplay loop></audio>
+
+<div class="container">
+
+  <!-- Step 1: Video Lokal -->
+  <div id="step1" class="section active">
+    <h3>Upload Video Lokal</h3>
+    <input type="file" id="videoInput" accept="video/*">
+    <input type="text" id="wa1" placeholder="Nomor WA (628xxxx)">
+    <input type="text" id="nama1" placeholder="Nama Kamu">
+    <div class="preview-container" style="display:none;">
+      <span class="hd-label">2K HD</span>
+      <video id="preview" controls></video>
+    </div>
+    <div class="button-box" style="display:none;">
+      <button id="btnDownload">Download</button>
+      <button id="btnWA">Kirim ke WA</button>
+    </div>
+    <button class="next-btn" onclick="nextStep(2)">Next → TikTok</button>
+  </div>
+
+  <!-- Step 2: TikTok -->
+  <div id="step2" class="section">
+    <h3>TikTok HD Downloader</h3>
+    <input type="text" id="linkTikTok" placeholder="Masukkan link TikTok HD">
+    <input type="text" id="wa2" placeholder="Nomor WA (628xxxx)">
+    <input type="text" id="nama2" placeholder="Nama Kamu">
+    <div class="button-box">
+      <button id="btnTikTokShare">Kirim ke WA</button>
+    </div>
+    <button class="next-btn" onclick="nextStep(3)">Next → Instagram</button>
+  </div>
+
+  <!-- Step 3: Instagram -->
+  <div id="step3" class="section">
+    <h3>Instagram HD Downloader</h3>
+    <input type="text" id="linkIG" placeholder="Masukkan link IG HD">
+    <input type="text" id="wa3" placeholder="Nomor WA (628xxxx)">
+    <input type="text" id="nama3" placeholder="Nama Kamu">
+    <div class="button-box">
+      <button id="btnIGShare">Kirim ke WA</button>
+    </div>
+    <button class="next-btn" onclick="nextStep(4)">Next → YouTube</button>
+  </div>
+
+  <!-- Step 4: YouTube -->
+  <div id="step4" class="section">
+    <h3>YouTube HD Downloader</h3>
+    <input type="text" id="linkYT" placeholder="Masukkan link YouTube HD">
+    <input type="text" id="wa4" placeholder="Nomor WA (628xxxx)">
+    <input type="text" id="nama4" placeholder="Nama Kamu">
+    <div class="button-box">
+      <button id="btnYTShare">Kirim ke WA</button>
+    </div>
+    <button class="next-btn" onclick="nextStep(1)">← Kembali ke Video Lokal</button>
+  </div>
+
+  <div class="developer">Developer: Sixtus Weisly Nababan</div>
+
+</div>
+
+<script>
+// Background: stars + meteor
+const canvas=document.getElementById('bgCanvas');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let stars=[];
+for(let i=0;i<200;i++){
+  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5});
+}
+let meteors=[];
+function spawnMeteor(){
+  meteors.push({x:Math.random()*canvas.width,y:-10,l:Math.random()*80+50,speed:Math.random()*6+4,angle:Math.random()*0.3+0.7});
+}
+setInterval(spawnMeteor,500);
+
+function animateBG(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let s of stars){
+    ctx.fillStyle="#fff";
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+  }
+  for(let i=meteors.length-1;i>=0;i--){
+    let m=meteors[i];
+    ctx.strokeStyle="#9b30ff";
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    ctx.moveTo(m.x,m.y);
+    ctx.lineTo(m.x - m.l*m.angle,m.y + m.l);
+    ctx.stroke();
+    m.x+=-m.l*m.angle*0.1;
+    m.y+=m.speed;
+    if(m.y>canvas.height) meteors.splice(i,1);
+  }
+  requestAnimationFrame(animateBG);
+}
+animateBG();
+
+// Multi-step navigation
+function nextStep(step){
+  for(let i=1;i<=4;i++) document.getElementById("step"+i).classList.remove("active");
+  document.getElementById("step"+step).classList.add("active");
+}
+
+// Video lokal
+let videoURL=null;
+const videoInput=document.getElementById("videoInput");
+const preview=document.getElementById("preview");
+const buttonBox=document.querySelector(".button-box");
+const btnDownload=document.getElementById("btnDownload");
+const btnWA=document.getElementById("btnWA");
+
+videoInput.addEventListener("change", function(){
+  const file=this.files[0];
+  if(!file)return;
+  if(videoURL) URL.revokeObjectURL(videoURL);
+  videoURL = URL.createObjectURL(file);
+  preview.src=videoURL;
+  document.querySelector(".preview-container").style.display="block";
+  buttonBox.style.display="flex";
+});
+
+// Download video
+btnDownload.addEventListener("click", function(){
+  if(!videoURL)return;
+  const a=document.createElement("a");
+  a.href=videoURL;
+  a.download="video_HD2K.mp4";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+
+// Kirim WA Video
+btnWA.addEventListener("click", function(){
+  const wa=document.getElementById("wa1").value.trim();
+  const nama=document.getElementById("nama1").value.trim();
+  if(!wa||!nama){ alert("Isi nomor WA dan nama!"); return; }
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(`Halo, saya ${nama} mengirim video 2K HD saya`)}`,"_blank");
+});
+
+// TikTok WA
+document.getElementById("btnTikTokShare").addEventListener("click", function(){
+  const link=document.getElementById("linkTikTok").value.trim();
+  const wa=document.getElementById("wa2").value.trim();
+  const nama=document.getElementById("nama2").value.trim();
+  if(!link||!wa||!nama){ alert("Lengkapi semua data!"); return; }
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(`Halo, saya ${nama}\nTikTok HD: ${link}`)}`,"_blank");
+});
+// IG WA
+document.getElementById("btnIGShare").addEventListener("click", function(){
+  const link=document.getElementById("linkIG").value.trim();
+  const wa=document.getElementById("wa3").value.trim();
+  const nama=document.getElementById("nama3").value.trim();
+  if(!link||!wa||!nama){ alert("Lengkapi semua data!"); return; }
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(`Halo, saya ${nama}\nIG HD: ${link}`)}`,"_blank");
+});
+// YT WA
+document.getElementById("btnYTShare").addEventListener("click", function(){
+  const link=document.getElementById("linkYT").value.trim();
+  const wa=document.getElementById("wa4").value.trim();
+  const nama=document.getElementById("nama4").value.trim();
+  if(!link||!wa||!nama){ alert("Lengkapi semua data!"); return; }
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(`Halo, saya ${nama}\nYouTube HD: ${link}`)}`,"_blank");
+});
+</script>
+
+</body>
+</html>
