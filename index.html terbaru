@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>WA HD 2K Multi-Step Neon Downloader</title>
+<style>
+body{
+  margin:0;
+  height:100vh;
+  font-family:Arial, sans-serif;
+  background: linear-gradient(135deg,#1a001f,#2e003c,#1a001f);
+  background-size:400% 400%;
+  animation:gradientBG 15s ease infinite;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+@keyframes gradientBG{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+.container{
+  width:400px;
+  background:#2c003e;
+  padding:25px;
+  border-radius:15px;
+  border:4px solid;
+  border-image: linear-gradient(270deg,#9b30ff,#d580ff,#9b30ff,#d580ff) 1;
+  box-shadow:0 0 20px #9b30ff,0 0 40px #d580ff,0 0 60px #9b30ff;
+  color:#fff;
+  text-align:center;
+  animation:neonBorder 3s linear infinite;
+}
+@keyframes neonBorder{
+  0%{border-image: linear-gradient(270deg,#9b30ff,#d580ff,#9b30ff,#d580ff) 1;}
+  25%{border-image: linear-gradient(0deg,#d580ff,#9b30ff,#d580ff,#9b30ff) 1;}
+  50%{border-image: linear-gradient(90deg,#9b30ff,#d580ff,#9b30ff,#d580ff) 1;}
+  75%{border-image: linear-gradient(180deg,#d580ff,#9b30ff,#d580ff,#9b30ff) 1;}
+  100%{border-image: linear-gradient(270deg,#9b30ff,#d580ff,#9b30ff,#d580ff) 1;}
+}
+button{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border:none;
+  border-radius:10px;
+  background:#9b30ff;
+  font-size:16px;
+  color:#fff;
+  cursor:pointer;
+  text-shadow:0 0 8px #d580ff;
+}
+button:hover{ background:#d580ff; }
+input{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+  border:none;
+  background:#3a003f;
+  color:#fff;
+}
+input::placeholder{ color:#d580ff; }
+video{
+  width:100%;
+  margin-top:15px;
+  border-radius:10px;
+  border:2px solid #d580ff;
+  box-shadow:0 0 10px #d580ff,0 0 20px #9b30ff;
+}
+.hd-label{
+  position:absolute;
+  top:5px;
+  left:5px;
+  background:#9b30ff;
+  color:#fff;
+  padding:2px 5px;
+  font-size:12px;
+  border-radius:4px;
+  text-shadow:0 0 8px #d580ff;
+  animation:blinkHD 1.5s infinite alternate;
+}
+@keyframes blinkHD{
+  0%{text-shadow:0 0 8px #d580ff;}
+  50%{text-shadow:0 0 16px #d580ff,0 0 20px #9b30ff;}
+  100%{text-shadow:0 0 8px #d580ff;}
+}
+a{display:block;margin-top:10px;color:#00e5ff;font-weight:bold;text-decoration:none;}
+a:hover{ color:#d580ff; }
+.section{ display:none; }
+.active{ display:block; }
+.developer{ margin-top:15px;font-size:12px;color:#d580ff;text-shadow:0 0 5px #9b30ff; }
+.preview-container{ position:relative; margin-top:10px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Step 1: Upload Video -->
+  <div id="step1" class="section active">
+    <h3>Upload Video Lokal</h3>
+    <input type="file" id="videoInput" accept="video/*">
+    <input type="text" id="wa1" placeholder="Nomor WA (628xxxx)">
+    <input type="text" id="nama1" placeholder="Nama Kamu">
+    <div class="preview-container" style="display:none;">
+      <span class="hd-label">2K HD</span>
+      <video id="preview" controls></video>
+    </div>
+    <button id="btnDownload" style="display:none;">Download Video</button>
+    <a id="share1" style="display:none;" target="_blank">Kirim ke WhatsApp</a>
+    <button onclick="nextStep(2)">Next → TikTok Downloader</button>
+  </div>
+
+  <!-- Step 2: TikTok -->
+  <div id="step2" class="section">
+    <h3>TikTok HD Downloader</h3>
+    <input type="text" id="linkTikTok" placeholder="Masukkan link TikTok HD">
+    <input type="text" id="wa2" placeholder="Nomor WA (628xxxx)">
+    <input type="text" id="nama2" placeholder="Nama Kamu">
+    <button id="btnTikTokShare">Share ke WA</button>
+    <button onclick="nextStep(3)">Next → Instagram Downloader</button>
+  </div>
+
+  <!-- Step 3: Instagram -->
+  <div id="step3" class="section">
+    <h3>Instagram HD Downloader</h3>
+    <input type="text" id="linkIG" placeholder="Masukkan link IG HD">
+    <input type="text" id="wa3" placeholder="Nomor WA (628xxxx)">
+    <input type="text" id="nama3" placeholder="Nama Kamu">
+    <button id="btnIGShare">Share ke WA</button>
+    <button onclick="nextStep(4)">Next → YouTube Downloader</button>
+  </div>
+
+  <!-- Step 4: YouTube -->
+  <div id="step4" class="section">
+    <h3>YouTube HD Downloader</h3>
+    <input type="text" id="linkYouTube" placeholder="Masukkan link YouTube HD">
+    <input type="text" id="wa4" placeholder="Nomor WA (628xxxx)">
+    <input type="text" id="nama4" placeholder="Nama Kamu">
+    <button id="btnYTShare">Share ke WA</button>
+    <button onclick="nextStep(1)">← Kembali ke Upload Video</button>
+  </div>
+
+  <div class="developer">Developer: Sixtus Weisly Nababan</div>
+</div>
+
+<script>
+let videoURL = null;
+
+// Multi-step navigation
+function nextStep(step){
+  for(let i=1;i<=4;i++){
+    document.getElementById("step"+i).classList.remove("active");
+  }
+  document.getElementById("step"+step).classList.add("active");
+}
+
+// Step 1: Upload video
+document.getElementById("videoInput").addEventListener("change", function(){
+  const videoInput = this.files[0];
+  if(!videoInput) return;
+  if(videoURL) URL.revokeObjectURL(videoURL);
+  videoURL = URL.createObjectURL(videoInput);
+
+  const preview = document.getElementById("preview");
+  preview.src = videoURL;
+  document.querySelector(".preview-container").style.display = "block";
+  document.getElementById("btnDownload").style.display = "block";
+
+  // Share WA button
+  const wa = document.getElementById("wa1").value.trim();
+  const nama = document.getElementById("nama1").value.trim();
+  const share = document.getElementById("share1");
+  share.style.display = "block";
+});
+
+document.getElementById("btnDownload").addEventListener("click", function(){
+  if(!videoURL) return;
+  const a = document.createElement("a");
+  a.href = videoURL;
+  a.download = "video_HD2K.mp4";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+});
+
+// Share WA Step 2-4
+document.getElementById("btnTikTokShare").addEventListener("click", function(){
+  const link = document.getElementById("linkTikTok").value.trim();
+  const wa = document.getElementById("wa2").value.trim();
+  const nama = document.getElementById("nama2").value.trim();
+  if(!link || !wa || !nama){ alert("Lengkapi semua data!"); return; }
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(`Halo, saya ${nama}\nTikTok HD: ${link}`)}`,"_blank");
+});
+
+document.getElementById("btnIGShare").addEventListener("click", function(){
+  const link = document.getElementById("linkIG").value.trim();
+  const wa = document.getElementById("wa3").value.trim();
+  const nama = document.getElementById("nama3").value.trim();
+  if(!link || !wa || !nama){ alert("Lengkapi semua data!"); return; }
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(`Halo, saya ${nama}\nIG HD: ${link}`)}`,"_blank");
+});
+
+document.getElementById("btnYTShare").addEventListener("click", function(){
+  const link = document.getElementById("linkYouTube").value.trim();
+  const wa = document.getElementById("wa4").value.trim();
+  const nama = document.getElementById("nama4").value.trim();
+  if(!link || !wa || !nama){ alert("Lengkapi semua data!"); return; }
+  window.open(`https://wa.me/${wa}?text=${encodeURIComponent(`Halo, saya ${nama}\nYouTube HD: ${link}`)}`,"_blank");
+});
+</script>
+</body>
+</html>
